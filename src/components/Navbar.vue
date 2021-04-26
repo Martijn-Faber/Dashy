@@ -3,22 +3,27 @@
     <div class="nav-brand">Dashy</div>
     <div class="nav-items">
       <div class="nav-item">
-        <router-link to="vandaag" class="nav-button">
+        <router-link to="/vandaag" class="nav-button">
           <i class="bi bi-house"></i>
         </router-link>
       </div>
       <div class="nav-item">
-        <router-link to="agenda" class="nav-button">
+        <router-link to="/agenda" class="nav-button">
+          <i class="bi bi-calendar2"></i>
+        </router-link>
+      </div>
+      <div class="nav-item">
+        <router-link to="/leermiddelen" class="nav-button">
           <i class="bi bi-calendar2"></i>
         </router-link>
       </div>
     </div>
     <div class="nav-profile">
-      <router-link to="help" class="nav-button">
+      <router-link to="/help" class="nav-button">
         <i class="bi bi-question-circle"></i>
       </router-link>
       <router-link to="account" class="nav-button">
-        <img src="../assets/index.jpg" alt="" class="profile-picture" />
+        <img :src="foto" alt="" class="profile-picture" />
       </router-link>
     </div>
   </div>
@@ -29,6 +34,28 @@ import Vue from "vue";
 
 export default Vue.extend({
   name: "Sidebar",
+  data() {
+    return {
+      foto: "",
+    };
+  },
+  methods: {
+    async getFoto() {
+      const response = await fetch(`http://192.168.0.141:5000/api/foto`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "image/jpeg",
+        },
+      });
+
+      // console.log(response);
+      // this.foto = response;
+    },
+  },
+  mounted() {
+    this.getFoto();
+  },
 });
 </script>
 
@@ -46,7 +73,7 @@ export default Vue.extend({
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 5%;
+    height: 5vh;
   }
 
   .nav-items {
@@ -55,7 +82,7 @@ export default Vue.extend({
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    height: 85%;
+    height: 80vh;
 
     .nav-item {
       display: flex;
@@ -73,7 +100,7 @@ export default Vue.extend({
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 15px 0;
+    margin: 12px 0;
     padding: 15px;
   }
 
@@ -82,7 +109,7 @@ export default Vue.extend({
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 10%;
+    height: 15vh;
     width: 100%;
 
     .profile-picture {
@@ -91,6 +118,12 @@ export default Vue.extend({
       border-radius: 100%;
       object-fit: cover;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    display: none;
   }
 }
 </style>
